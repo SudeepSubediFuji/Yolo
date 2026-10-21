@@ -1,0 +1,28 @@
+user@user-HM-AB450:/media/user/D865-031D/yolo/proof$ nvidia-smi
+Wed Oct 21 11:13:28 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 595.91.07              Driver Version: 595.91.07      CUDA Version: 13.2     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 5060 Ti     Off |   00000000:08:00.0  On |                  N/A |
+|  0%   38C    P1             32W /  180W |    1127MiB /  16311MiB |     13%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A            2528      G   /usr/lib/xorg/Xorg                      191MiB |
+|    0   N/A  N/A            2758      G   /usr/bin/gnome-shell                     75MiB |
+|    0   N/A  N/A            5244      G   ...rack-uuid=3190708988185955192         51MiB |
+|    0   N/A  N/A            5915      C   ...er/yolo/yolo_venv/bin/python3        264MiB |
+|    0   N/A  N/A            7298      G   /usr/bin/nautilus                        14MiB |
+|    0   N/A  N/A            8015      G   .../8863/usr/lib/firefox/firefox        171MiB |
+|    0   N/A  N/A           10454      C   ...er/yolo/yolo_venv/bin/python3        282MiB |
++-----------------------------------------------------------------------------------------+
+

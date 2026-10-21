@@ -1,0 +1,79 @@
+StreamlitでリアルタイムWebカメラの検知を実現するには、標準の `st.camera_input`（静止画撮影用）ではなく、**WebRTC（`streamlit-webrtc`）** を利用するのが最も一般的で確実な方法です。
+
+`streamlit-webrtc` を使うと、ブラウザのWebカメラの映像ストリームをサーバー側（Python/YOLO）へフレーム単位でリアルタイム転送し、推論結果をブラウザに直接描画できます。
+
+---
+
+### 手順 1: パッケージのインストール
+
+作成した仮想環境（`venv`）内で、必要なライブラリをインストールします。
+
+```bash
+pip install ultralytics streamlit streamlit-webrtc av opencv-python
+
+```
+
+---
+
+### 手順 2: 実装コード (`app.py`)
+
+以下の内容で `app.py` というファイルを作成します。
+
+```python
+import streamlit as st
+from streamlit_webrtc import webrtc_streamer, VideoProcessorBase, RTCConfiguration
+import cv2
+import av
+from ultralytics import YOLO
+
+st.title("YOLO リアルタイムWebカメラ検知")
+
+# 1. YOLOモデルのロード（キャッシュして再読み込みを防止）
+@st.cache_resource
+def load_model():
+    return YOLO("yolov8n.pt")  # 軽量モデルを使用
+
+model = load_model()
+
+# 2. WebRTC用ビデオプロセッサクラスの定義
+class YOLOVideoProcessor(VideoProcessorBase):
+    def recv(self, frame: av.VideoFrame) -> av.VideoFrame:
+        # WebRTCからの入力フレームをOpenCV(BGR)画像に変換
+        img = frame.to_ndarray(format="bgr24")
+
+        # YOLOで物体検出・追跡を実行
+        # （追跡IDを表示したい場合は model.track(img, persist=True) を使用）
+        results = model(img)
+
+        # 検出結果（バウンディングボックス等）を描画した画像を取得
+        annotated_frame = results[0].plot()
+
+        # 描画済み画像をWebRTC形式に戻してブラウザに返す
+        return av.VideoFrame.from_ndarray(annotated_frame, format="bgr24")
+
+# 3. WebRTCストリーマーの起動
+RTC_CONFIGURATION = RTCConfiguration(
+    {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
+)
+
+webrtc_streamer(
+    key="yolo-realtime",
+    video_processor_factory=YOLOVideoProcessor,
+    rtc_configuration=RTC_CONFIGURATION,
+    media_stream_constraints={"video": True, "audio": False},
+)
+
+```
+
+---
+
+### 手順 3: アプリの起動
+
+ターミナルで仮想環境を有効にした状態のまま、次のコマンドでStreamlitを起動します。
+
+```bash
+streamlit run app.py
+
+```
+
+ブラウザが開いたら、カメラアクセス許可を求められるので「許可」を選択し、`START` ボタンを押すとリアルタイムの検出映像が表示されます。
