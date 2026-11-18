@@ -1,0 +1,7 @@
+
+image 1/1 /home/user/yolo_train/hnm/test_img/image/cardboardface_04.jpg: 640x640 2 persons, 6.8ms
+Speed: 62.2ms preprocess, 6.8ms inference, 32.6ms postprocess per image at shape (1, 3, 640, 640)
+Human detected at [400.37103271484375, 262.8158264160156, 512.7373657226562, 436.9342346191406]
+Normalized value of output0.png for labelling:0 (0.5706927180290222, 0.4373437762260437, 0.1404579132795334, 0.2176479995250702)
+Human detected at [145.43408203125, 157.188720703125, 297.8426818847656, 362.9818420410156]
+Normalized value of output1.png for labelling:0 (0.2770479619503021, 0.32510656118392944, 0.19051074981689453, 0.2572413980960846)
